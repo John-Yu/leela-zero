@@ -51,7 +51,7 @@ SMP::Mutex& UCTNode::get_mutex() {
     return m_nodemutex;
 }
 
-bool UCTNode::create_children(std::atomic<int>& nodecount,
+bool UCTNode::create_children(std::atomic<size_t>& nodecount,
                               GameState& state,
                               float& eval,
                               float mem_full) {
@@ -117,7 +117,7 @@ bool UCTNode::create_children(std::atomic<int>& nodecount,
     return true;
 }
 
-void UCTNode::link_nodelist(std::atomic<int>& nodecount,
+void UCTNode::link_nodelist(std::atomic<size_t>& nodecount,
                             std::vector<Network::scored_node>& nodelist,
                             float mem_full) {
     if (nodelist.empty()) {

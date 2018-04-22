@@ -106,7 +106,7 @@ private:
     GameState & m_rootstate;
     std::unique_ptr<GameState> m_last_rootstate;
     std::unique_ptr<UCTNode> m_root;
-    std::atomic<int> m_nodes{0};
+    std::atomic<size_t> m_nodes{0};
     std::atomic<int> m_playouts{0};
     std::atomic<bool> m_run{false};
     int m_maxplayouts;

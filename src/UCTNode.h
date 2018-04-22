@@ -43,7 +43,7 @@ public:
     UCTNode() = delete;
     ~UCTNode() = default;
 
-    bool create_children(std::atomic<int>& nodecount,
+    bool create_children(std::atomic<size_t>& nodecount,
                          GameState& state, float& eval,
                          float mem_full = 0.0f);
 
@@ -85,7 +85,7 @@ private:
         PRUNED,
         ACTIVE
     };
-    void link_nodelist(std::atomic<int>& nodecount,
+    void link_nodelist(std::atomic<size_t>& nodecount,
                        std::vector<Network::scored_node>& nodelist,
                        float mem_full);
     double get_blackevals() const;

@@ -114,12 +114,12 @@ Parameters Tuner::get_parameters_by_int(const std::vector<Configurations>& opts,
     Parameters param;
     std::vector<size_t> choices(opts.size());
 
-    auto cfgs = 1;
+	auto cfgs = size_t{1};
     for (auto c = size_t{0}; c < opts.size(); c++) {
         choices[c] = opts[c].second.size();
         cfgs *= choices[c];
     }
-    auto j = n;
+    auto j = size_t(n);
 
     for (auto c = size_t{0}; c < opts.size(); c++) {
         auto o = opts[c];
@@ -271,7 +271,7 @@ std::string Tuner::tune_sgemm(const int m, const int n, const int k,
     myprintf("\nStarted OpenCL SGEMM tuner.\n");
 
     auto valid_params = std::vector<int>{};
-    auto cfgs = 1;
+    auto cfgs = size_t{1};
     for (auto c = size_t{0}; c < opts.size(); c++) {
         cfgs *= opts[c].second.size();
     }
@@ -394,7 +394,7 @@ std::string Tuner::tune_sgemm(const int m, const int n, const int k,
             myprintf("(%u/%u) %s %.4f ms (%.1f GFLOPS)\n",
                param_counter, valid_params.size(), param_str.c_str(),
                kernel_ms, kernel_gflops);
-            best_time = sum;
+            best_time = static_cast<unsigned>(std::round(sum));
             best_params = defines;
         }
     }

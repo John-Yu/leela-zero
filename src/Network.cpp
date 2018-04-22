@@ -462,6 +462,7 @@ void Network::winograd_transform_in(const std::vector<float>& in,
                 in_pad[yin + 1][xin + 1] = in[ch*(W*H) + yin*W + xin];
             }
         }
+		// 9 * 2 +3 = 21 > 20  ???  YUHZ
         for (auto block_y = 0; block_y < WTILES; block_y++) {
             // Tiles overlap by 2
             const auto yin = 2 * block_y;
