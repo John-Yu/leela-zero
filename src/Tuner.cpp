@@ -1,6 +1,6 @@
 /*
     This file is part of Leela Zero.
-    Copyright (C) 2017 Gian-Carlo Pascutto
+    Copyright (C) 2017-2018 Gian-Carlo Pascutto and contributors
 
     Leela Zero is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -114,12 +114,12 @@ Parameters Tuner::get_parameters_by_int(const std::vector<Configurations>& opts,
     Parameters param;
     std::vector<size_t> choices(opts.size());
 
-	auto cfgs = size_t{1};
+    auto cfgs = 1;
     for (auto c = size_t{0}; c < opts.size(); c++) {
         choices[c] = opts[c].second.size();
         cfgs *= choices[c];
     }
-    auto j = size_t(n);
+    auto j = n;
 
     for (auto c = size_t{0}; c < opts.size(); c++) {
         auto o = opts[c];
@@ -152,7 +152,7 @@ std::string Tuner::parameters_to_string(const Parameters& p) {
 }
 
 static size_t next_power_of_two(const size_t x) {
-    return 2 << (size_t)(std::ceil(std::log2(x)) - 1);
+    return 2 << size_t(std::ceil(std::log2(x)) - 1);
 }
 
 static void sgemm_generate_data(std::vector<float> &x,
@@ -271,7 +271,7 @@ std::string Tuner::tune_sgemm(const int m, const int n, const int k,
     myprintf("\nStarted OpenCL SGEMM tuner.\n");
 
     auto valid_params = std::vector<int>{};
-    auto cfgs = size_t{1};
+    auto cfgs = 1;
     for (auto c = size_t{0}; c < opts.size(); c++) {
         cfgs *= opts[c].second.size();
     }
@@ -322,9 +322,9 @@ std::string Tuner::tune_sgemm(const int m, const int n, const int k,
 
         auto sgemm_kernel = cl::Kernel(program, "XgemmBatched");
 
-        auto m_ceil = (int)ceilMultiple(ceilMultiple(m, p["MWG"]), p["VWM"]);
-        auto n_ceil = (int)ceilMultiple(ceilMultiple(n, p["NWG"]), p["VWN"]);
-        auto k_ceil = (int)ceilMultiple(ceilMultiple(k, p["KWG"]), p["VWM"]);
+        auto m_ceil = int(ceilMultiple(ceilMultiple(m, p["MWG"]), p["VWM"]));
+        auto n_ceil = int(ceilMultiple(ceilMultiple(n, p["NWG"]), p["VWN"]));
+        auto k_ceil = int(ceilMultiple(ceilMultiple(k, p["KWG"]), p["VWM"]));
 
         if (m_ceil != m_ceil_prev
             || n_ceil != n_ceil_prev
@@ -355,7 +355,7 @@ std::string Tuner::tune_sgemm(const int m, const int n, const int k,
 
         cl::NDRange size_sgemm = {(m_ceil * p["MDIMC"]) / p["MWG"],
                                   (n_ceil * p["NDIMC"]) / p["NWG"],
-                                  (size_t)batch_size};
+                                  size_t(batch_size)};
 
         auto sum = 0.0f;
         auto max_error = 0.0f;
@@ -394,7 +394,7 @@ std::string Tuner::tune_sgemm(const int m, const int n, const int k,
             myprintf("(%u/%u) %s %.4f ms (%.1f GFLOPS)\n",
                param_counter, valid_params.size(), param_str.c_str(),
                kernel_ms, kernel_gflops);
-            best_time = static_cast<unsigned>(std::round(sum));
+            best_time = sum;
             best_params = defines;
         }
     }
