@@ -69,6 +69,8 @@
  * faster if you have a recent GPU. Don't use it on CPUs even if they have
  * OpenCL drivers - the BLAS version is much faster for those.
  */
+// YUHZ
+#define FEATURE_USE_CPU_ONLY
 #ifndef FEATURE_USE_CPU_ONLY
 #define USE_OPENCL
 #endif
@@ -101,7 +103,7 @@ using net_t = float;
 #endif
 
 #if (_MSC_VER >= 1400) /* VC8+ Disable all deprecation warnings */
-    #pragma warning(disable : 4996)
+    #pragma warning(disable : 4996 4267 4819)
 #endif /* VC8+ */
 
 #endif
