@@ -478,11 +478,14 @@ void OpenCL_Network::forward(const std::vector<net_t>& input,
             CL_MEM_READ_WRITE, alloc_inSize);
         opencl_thread_data.m_VBuffer = cl::Buffer(
             m_opencl.m_context,
-            CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
-            alloc_vm_size, v_zeros.data(), nullptr);
+//YUHZ CL_MEM_HOST_NO_ACCESS ONLY FOR OPENCL 1.2 +
+//           CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS | CL_MEM_COPY_HOST_PTR,
+            CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+			alloc_vm_size, v_zeros.data(), nullptr);
         opencl_thread_data.m_MBuffer = cl::Buffer(
             m_opencl.m_context,
-            CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, alloc_vm_size);
+//            CL_MEM_READ_WRITE | CL_MEM_HOST_NO_ACCESS, alloc_vm_size);
+			CL_MEM_READ_WRITE , alloc_vm_size);
 
         opencl_thread_data.m_pinnedOutBuffer_pol = cl::Buffer(
             m_opencl.m_context,
